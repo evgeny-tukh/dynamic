@@ -38,11 +38,23 @@ var WndClientContainer = Styled.Div`
 class CloseIcon extends Component {
     constructor () {
         super (...arguments);
+
+        if (this.properties.color) {
+            this.openTag = `<font color="${this.properties.color}">`;
+            this.closeTag = '</font>';
+        } else {
+            this.openTag = '';
+            this.closeTag = '';
+        }
     }
 
     render () {
         return `
-            <CloseIconContainer>✖</CloseIconContainer>
+            <CloseIconContainer>
+                ${this.openTag}
+                ✖
+                ${this.closeTag}
+            </CloseIconContainer>
         `;
     }
 }

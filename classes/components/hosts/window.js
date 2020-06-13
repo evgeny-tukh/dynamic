@@ -18,7 +18,11 @@ class WindowHost extends Component {
         let result = '';
 
         this.store.state.windows.list.forEach (window => {
-            result += `<${window.component} ${window.props}></${window.component}>\n`;
+            if (window.component) {
+                result += `<${window.component} ${window.props}></${window.component}>\n`;
+            } else {
+                result += `<${window}></${window}>\n`;
+            }
         });
 
         return result;

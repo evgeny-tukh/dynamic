@@ -385,3 +385,10 @@ Component.idleProcessor = setInterval (() => {
         Component.callbacks.queue = [];
     }
 }, 100);
+Component.invokeMethod = (id, method, param) => {
+    const component = Component.all [id];
+
+    if (component && component [method]) {
+        component [method] (param);
+    }
+};
