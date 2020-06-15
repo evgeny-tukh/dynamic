@@ -28,9 +28,19 @@ class ConfirmationBox extends Wnd {
         let result;
 
         if (this.properties.actions) {
-            result = this.properties.actions.split (',').map (action => { return parseInt (action); });
+            result = this.properties.actions.split (',').map (action => { 
+                const val = parseInt (action);
+
+                // Return either numeric value or string value, depends on content
+                return isNaN (val) ? action : val; 
+            });
         } else if (this.action) {
-            result = [parseInt (this.properties.action)];
+            let val = parseInt (this.properties.action);
+
+            // Insert number or string, depends on content
+            if (isNaN (val)) val = this.properties.action;
+
+            result = [val];
         } else {
             result = null;
         }

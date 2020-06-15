@@ -78,6 +78,10 @@ Store.openInputBox = (state, data) => {
     state.input = data;
 };
 
+Store.openConfBox = (state, data) => {
+    state.confirmation = data;
+};
+
 Store.closeConfBox = state => {
     state.confirmation = null;
 };
@@ -97,7 +101,11 @@ Store.processBaseEvent = (state, event) => {
 
     switch (event.id) {
         case Events.OPEN_INPUT_BOX: {
-            Store.openInputBox (event.payload); break;
+            Store.openInputBox (state, event.payload); break;
+        }
+
+        case Events.OPEN_CONF_BOX: {
+            Store.openConfBox (state, event.payload); break;
         }
 
         case Events.CLOSE_CONF_BOX: {

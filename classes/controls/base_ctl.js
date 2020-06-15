@@ -4,8 +4,22 @@ class BaseControl extends Component {
 
         this.tag = 'base';
         this.id = `bctl${BaseControl.count++}`;
-        this.onClickEvent = this.properties.onclickevent ? parseInt (this.properties.onclickevent) : null;
-        this.onChangeEvent = this.properties.onchangeevent ? parseInt (this.properties.onchangeevent) : null;
+        this.onClickEvent = BaseControl.decodeEvent (this.properties.onclickevent);
+        this.onChangeEvent = BaseControl.decodeEvent (this.properties.onchangeevent);
+    }
+
+    static decodeEvent (eventID) {
+        let result;
+
+        if (!eventID) {
+            result = null;
+        } else {
+            result = parseInt (eventID);
+
+            if (isNaN (result)) result = eventID;
+        }
+
+        return result;
     }
 
     getAttributes () {
