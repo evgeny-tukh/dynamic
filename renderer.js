@@ -153,6 +153,12 @@ class Component {
             const attrValue = attr.value;
 
             switch (attrName) {
+                case 'onwheel': 
+                case 'onmousewheel': 
+                case 'onmouseout': 
+                case 'onmousemove':
+                case 'onmouseup':
+                case 'onmousedown':
                 case 'onclick': {
                     Component.setupLaunch (element, attrValue, attrName);
 

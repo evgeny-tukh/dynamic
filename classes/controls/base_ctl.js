@@ -31,6 +31,7 @@ class BaseControl extends Component {
         const fontSize = this.properties.fontsize ? this.properties.fontsize : '20px';
         const fontWeight = stringToBool (this.properties.bold) ? 'bold' : 'normal';
         const fontItalic = stringToBool (this.properties.italic) ? 'italic' : 'normal';
+        const fontFamily = this.properties.font ? `font-family:'${this.properties.font}';` : '';
         const color = this.properties.color ? this.properties.color : 'black';
         const bg = this.properties.background ? this.properties.background : 'initial';
         const borderRadius = this.properties.borderradius ? this.properties.borderradius : 'initial';
@@ -47,11 +48,13 @@ class BaseControl extends Component {
         const marginRight = this.properties.marginright ? this.properties.marginright : 'initial';
         const marginTop = this.properties.margintop ? this.properties.margintop : 'initial';
         const marginBottom = this.properties.marginbottom ? this.properties.marginbottom : 'initial';
+        const cursor = this.properties.cursor ? this.properties.cursor : 'default';
 
         return `
             font-size: ${fontSize};
             font-weight: ${fontWeight};
             font-style: ${fontItalic};
+            ${fontFamily}
             color: ${color};
             background: ${bg};
             border-radius: ${borderRadius};
@@ -67,6 +70,7 @@ class BaseControl extends Component {
             margin-top: ${marginTop};
             margin-bottom: ${marginBottom};
             float: ${float};
+            cursor: ${cursor};
         `;
     }
 
