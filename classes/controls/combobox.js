@@ -6,7 +6,20 @@ class ComboBox extends BaseControl {
 
         const items = super.getText ();
 
-        this.items = items.length > 0 ? items.split (',') : [];
+        this.items = [];
+        this.values = [];
+
+        items.split (',').forEach ((item, index) => {
+            const parts = item.split ('=');
+
+            if (parts.length > 1) {
+                this.items.push (parts [0]);
+                this.values.push (parts [1]);
+            } else {
+                this.items.push (item);
+                this.values.push (index);
+            }
+        });
 
         this.tag = 'select';
         this.selection = this.properties.selection ? parseInt (this.properties.selection) : -1;
@@ -17,7 +30,14 @@ class ComboBox extends BaseControl {
         let result = '';
 
         this.items.forEach ((item, index) => {
-            result += `<option value="${index}" ${index === instance.selection || item === instance.selection ? "selected" : ""}>${item}</option>\n`;
+            result += `
+                <option
+                    value="${this.values [index]}"
+                    ${index === instance.selection || item === instance.selection ? "selected" : ""}
+                >
+                    ${item}
+                </option>\n
+            `;
         });
 
         return result;
