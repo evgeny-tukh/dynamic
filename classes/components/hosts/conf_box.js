@@ -17,7 +17,7 @@ class ConfirmationBoxHost extends Component {
         return this.activeConfirmation ? `
             <ConfirmationBox 
                 title="${this.activeConfirmation.title}" 
-                actions="${this.activeConfirmation.actions.join (',')}"
+                actions="${this.activeConfirmation.actions ? this.activeConfirmation.actions.join (',') : ''}"
                 callback="${this.activeConfirmation.callback ? this.activeConfirmation.callback : ''}"
                 data="${this.activeConfirmation.data}"
             >
