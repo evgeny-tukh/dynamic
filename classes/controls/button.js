@@ -3,6 +3,9 @@ class SimpleButton extends BaseControl {
         super (...arguments);
 
         this.tag = 'button';
+
+        this.properties.cursor = 'pointer';
+        this.properties.textalign = 'center';
     }
 }
 

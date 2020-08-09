@@ -2,20 +2,40 @@ class App extends Component {
     constructor () {
         super (...arguments);
 
+        const app = this;
+
+        this.aliveTimeout = this.properties.alivetimeout ? parseInt (this.properties.alivetimeout) : 300000;
+        this.aliveCheckInterval = this.properties.alivecheckinterval ? parseInt (this.properties.alivecheckinterval) : 10000;
+        this.lastMouseMove = getTimestamp ();
+
+        this.store.dispatch (ActionEvent.create (Events.SET_MOBILE, App.mobileApp));
+
         window.addEventListener(
             "orientationchange", 
             () => {
                 document.body.className = App.isLandscape () ? BODY_MOBILE_LANDSCAPE_CLASS : BODY_MOBILE_PORTRAIT_CLASS;
 
-                this.store.dispatch (ActionEvent.create (Events.ORIENTATION_CHANGED, App.isLandscape ()));
+                app.store.dispatch (ActionEvent.create (Events.ORIENTATION_CHANGED, App.isLandscape ()));
             }
         );
 
-        this.store.dispatch (ActionEvent.create (Events.SET_MOBILE, App.mobileApp));
+        window.addEventListener(
+            "mousemove", 
+            () => {
+                app.lastMouseMove = getTimestamp ();
+            }
+        );
+
+        setInterval (() => {
+            app.onAliveCheck ((getTimestamp () - app.lastMouseMove) < app.aliveTimeout);
+        }, this.aliveCheckInterval);
     }
 
     render () {
         return '';
+    }
+
+    onAliveCheck (alive) {
     }
 }
 

@@ -18,4 +18,11 @@ ActionEvent.BASE_EVENTS = {
 
     OPEN_WINDOW: 'OpenWindow',
     CLOSE_WINDOW: 'CloseWindow',
+
+    LOGGED_IN: 'LoggedIn',
+    LOGGED_OUT: 'LogedOut',
+    USER_NAME_CHANGED: 'UserNameChanged',
+    PASSWORD_CHANGED: 'PasswordChanged',
+    PASSWORD_CONF_CHANGED: 'PasswordConfChanged',
+    LOGIN_FAILED: 'LoginFailed',
 };

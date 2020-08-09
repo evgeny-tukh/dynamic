@@ -25,6 +25,14 @@ class ComboBox extends BaseControl {
         this.selection = this.properties.selection ? parseInt (this.properties.selection) : -1;
     }
 
+    getPrefix () {
+        return '';
+    }
+
+    getOptionClickHandler () {
+        return '';
+    }
+
     getText () {
         const instance = this;
         let result = '';
@@ -32,10 +40,12 @@ class ComboBox extends BaseControl {
         this.items.forEach ((item, index) => {
             result += `
                 <option
-                    value="${this.values [index]}"
+                    ${this.getOptionClickHandler ()}
+                    style="text-align:left;"
+                    value="${instance.values [index]}"
                     ${index === instance.selection || item === instance.selection ? "selected" : ""}
                 >
-                    ${item}
+                    ${instance.getPrefix (item)}${item}
                 </option>\n
             `;
         });

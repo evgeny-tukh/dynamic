@@ -52,6 +52,14 @@ Store.BASE_STATE = {
         count: 0,
         queue: [],
     },
+
+    user: {
+        loggedIn: false,
+        userID: null,
+        userName: '',
+        password: '',
+        loginFailed: false,
+    },
 };
 
 Store.openWindow = (state, componentName) => {
@@ -126,6 +134,35 @@ Store.processBaseEvent = (state, event) => {
 
         case Events.CLOSE_WINDOW: {
             Store.closeWindow (state, event.payload); break;
+        }
+
+        case Events.LOGGED_IN: {
+            state.user.userID = event.payload.userID;
+            state.user.userName = event.payload.userName;
+            state.user.roles = event.payload.roles;
+            state.user.loggedIn = true;
+            state.user.loginFailed = false;
+
+            break;
+        }
+
+        case Events.LOGGED_OUT: {
+            state.user.userID = null;
+            state.user.loggedIn = false;
+
+            break;
+        }
+
+        case Events.USER_NAME_CHANGED: {
+            state.user.userName = event.payload; break;
+        }
+
+        case Events.PASSWORD_CHANGED: {
+            state.user.password = event.payload; break;
+        }
+
+        case Events.LOGIN_FAILED: {
+            state.user.loginFailed = true; break;
         }
 
         default: {

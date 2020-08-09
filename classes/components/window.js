@@ -39,7 +39,10 @@ class CloseIcon extends Component {
     constructor () {
         super (...arguments);
 
-        if (this.properties.color) {
+        if (this.properties.style) {
+            this.openTag = `<p style="${this.properties.style}">`;
+            this.closeTag = '</p>';
+        } else if (this.properties.color) {
             this.openTag = `<font color="${this.properties.color}">`;
             this.closeTag = '</font>';
         } else {
@@ -81,14 +84,28 @@ class Wnd extends Component {
         super (...arguments);
 
         this.componentName = 'Wnd';
+        this.dimensions = null;
     }
 
-    onClose () {
+    close () {
         this.store.dispatch (ActionEvent.create (Events.CLOSE_WINDOW, this.componentName));
     }
 
+    onClose () {
+        //this.store.dispatch (ActionEvent.create (Events.CLOSE_WINDOW, this.componentName));
+        this.close ();
+    }
+
     styleGetter () {
-        return '';
+        let style = '';
+
+        if (this.dimensions) {
+            ['width', 'height', 'left', 'top'].forEach (propName => {
+                if (this.dimensions [propName]) style += `${propName}:${this.dimensions [propName]};`;
+            });
+        }
+
+        return this.dimensions ? style : '';
     }
 
     renderChildren () {
@@ -96,7 +113,7 @@ class Wnd extends Component {
     }
 
     render () {
-        WndContainer.styleGetter = this.styleGetter;
+        WndContainer.styleGetter = this.styleGetter.bind (this);
 
         const children = this.renderChildren ();
         

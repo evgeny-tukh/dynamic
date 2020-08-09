@@ -27,6 +27,7 @@ class BaseControl extends Component {
     }
 
     getBasicStyle () {
+        const textAlign = this.properties.textalign ? this.properties.textalign : 'inherit';
         const float = this.properties.float ? this.properties.float : 'initial';
         const fontSize = this.properties.fontsize ? this.properties.fontsize : '20px';
         const fontWeight = stringToBool (this.properties.bold) ? 'bold' : 'normal';
@@ -38,19 +39,26 @@ class BaseControl extends Component {
         const borderWidth = this.properties.borderwidth ? this.properties.borderwidth : 'initial';
         const borderColor = this.properties.bordercolor ? this.properties.bordercolor : 'initial';
         const borderStyle = this.properties.borderstyle ? this.properties.borderstyle : 'initial';
-        const width = this.properties.width ? this.properties.width : 'fit-content';
-        const height = this.properties.height ? this.properties.height : 'fit-content';
-        const paddingLeft = this.properties.paddingleft ? this.properties.paddingleft : 'initial';
-        const paddingRight = this.properties.paddingright ? this.properties.paddingright : 'initial';
-        const paddingTop = this.properties.paddingtop ? this.properties.paddingtop : 'initial';
-        const paddingBottom = this.properties.paddingbottom ? this.properties.paddingbottom : 'initial';
-        const marginLeft = this.properties.marginleft ? this.properties.marginleft : 'initial';
-        const marginRight = this.properties.marginright ? this.properties.marginright : 'initial';
-        const marginTop = this.properties.margintop ? this.properties.margintop : 'initial';
-        const marginBottom = this.properties.marginbottom ? this.properties.marginbottom : 'initial';
+        //const width = this.properties.width ? this.properties.width : 'fit-content';
+        //const height = this.properties.height ? this.properties.height : 'fit-content';
+        const padding = this.properties.padding ? this.properties.padding : 'initial';
+        const paddingLeft = this.properties.paddingleft ? this.properties.paddingleft : padding;
+        const paddingRight = this.properties.paddingright ? this.properties.paddingright : padding;
+        const paddingTop = this.properties.paddingtop ? this.properties.paddingtop : padding;
+        const paddingBottom = this.properties.paddingbottom ? this.properties.paddingbottom : padding;
+        const margin = this.properties.margin ? this.properties.margin : 'initial';
+        const marginLeft = this.properties.marginleft ? this.properties.marginleft : margin;
+        const marginRight = this.properties.marginright ? this.properties.marginright : margin;
+        const marginTop = this.properties.margintop ? this.properties.margintop : margin;
+        const marginBottom = this.properties.marginbottom ? this.properties.marginbottom : margin;
         const cursor = this.properties.cursor ? this.properties.cursor : 'default';
+        const display = this.properties.display ? this.properties.display : 'initial';
 
         return `
+            outline-style: none;
+            user-select: none;
+            -moz-user-select: none;
+            text-align: ${textAlign};
             font-size: ${fontSize};
             font-weight: ${fontWeight};
             font-style: ${fontItalic};
@@ -61,6 +69,7 @@ class BaseControl extends Component {
             border-style: ${borderStyle};
             border-color: ${borderColor};
             border-width: ${borderWidth};
+            padding: ${padding};
             padding-left: ${paddingLeft};
             padding-right: ${paddingRight};
             padding-top: ${paddingTop};
@@ -71,6 +80,7 @@ class BaseControl extends Component {
             margin-bottom: ${marginBottom};
             float: ${float};
             cursor: ${cursor};
+            display: ${display};
         `;
     }
 
@@ -138,6 +148,10 @@ registerComponentClass (BaseControl);
 
 function dispatchBaseCtlEvent (event) {
     const handlerName = `on${event.type}`;
+    let target = event.target;
 
-    Component.all [event.target.parentElement.id].dispatchEvent (event);
+    if (target.tagName.toUpperCase () === 'OPTION')
+        target = target.parentElement;
+
+    Component.all [target.parentElement.id].dispatchEvent (event);
 }

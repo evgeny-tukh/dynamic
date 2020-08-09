@@ -23,6 +23,8 @@ function findVariableName (variable, object) {
         for (let i = 0; i < keys.length; ++ i) {
             const key = keys [i];
 
+            if (key === 'webkitStorageInfo') continue;
+
             if (key in object && object [key] === variable) {
                 result = key; break;
             }
@@ -96,6 +98,14 @@ function Styled (css, tag, element) {
 
         if (instance && instance.hover) {
             createCssClass (element.styleName + ':hover', instance.hover);
+        }
+
+        if (instance && instance.before) {
+            createCssClass (element.styleName + '::before', instance.before);
+        }
+
+        if (instance && instance.hoverBefore) {
+            createCssClass (element.styleName + ':hover::before', instance.hoverBefore);
         }
 
         if (instance) {
@@ -247,9 +257,15 @@ class Component {
     
         if (eventName) {
             element [eventName] = event => {
-                object [method] (event);
-    
-                event.stopPropagation ();
+                const handler = object [method];
+
+                switch (typeof (handler)) {
+                    case 'function':
+                        object [method] (event);
+                        event.stopPropagation ();
+
+                        break;
+                }
             };
         }
     }
@@ -356,8 +372,11 @@ class Component {
     }
 }
 
+Component.anonimousCbCount = 0;
+
 Component.callbacks = {
     list: {},
+    listToBeCalledOnce: {},
     queue: [],
     register: (name, cb, context) => {
         if (!Component.callbacks.list [name]) {
@@ -367,12 +386,49 @@ Component.callbacks = {
     invoke: (name, data) => {
         const desc = Component.callbacks.list [name];
 
-        if (desc) desc.cb (data, desc.context);
+        return desc ? desc.cb (data, desc.context) : null;
     },
     invokeAsync: (name, data) => {
         const desc = Component.callbacks.list [name];
 
         if (desc) Component.callbacks.queue.push ({ cb: desc.cb, data: data, context: desc.context });
+    },
+    getCallStackInfo: levelUp => {
+        if (typeof (levelUp) === 'undefined') levelUp = 1;
+
+        const stackTrace = (new Error()).stack; // Only tested in latest FF and Chrome
+
+        let item = stackTrace.replace(/^Error\s+/, '').split ("\n") [levelUp+1].replace ('@', ' ').replace ('(', '').replace (')', '');
+        
+        const parts = item.split (' ');
+        const location = parts [parts.length-1];
+        const locationInfo = location.split (':');
+        const char = locationInfo [locationInfo.length-1];
+        const line = locationInfo [locationInfo.length-2];
+        
+        locationInfo.splice (locationInfo.length-2, 2);
+        
+        const file = locationInfo.join (':');
+        const caller = parts [parts.length-2];
+
+        return { name: caller, file: file, char: parseInt (char), line: parseInt (line) };
+    },
+    bind: (cb, context) => {
+        const stackInfo = Component.callbacks.getCallStackInfo (1);
+        const key = `${stackInfo.file}:${stackInfo.line}`
+        if (!Component.callbacks.listToBeCalledOnce [key]) {
+            Component.callbacks.register (key, cb, context);
+        }
+
+        return key;
+    },
+    invokeAsyncOnce: (cb, arg) => {
+        const stackInfo = Component.callbacks.getCallStackInfo (1);
+        const key = `${stackInfo.file}:${stackInfo.line}`
+        if (!Component.callbacks.listToBeCalledOnce [key]) {
+            Component.callbacks.register (key, cb, this);
+            Component.callbacks.invokeAsync (key, arg);
+        }
     },
 };
 
