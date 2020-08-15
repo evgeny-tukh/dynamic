@@ -20,8 +20,7 @@ class EditBox extends BaseControl {
         if (this.properties.name)
             this.attributes += ` name="${this.properties.name}"`;
 
-        if (this.properties.autocomplete)
-            this.attributes += ' autocomplete="on"';
+        this.attributes += ` autocomplete="${this.properties.autocomplete ? 'on' : 'new-password'}"`;
     }
 
     getType () {
@@ -35,6 +34,20 @@ class EditBox extends BaseControl {
         } else {
             return 'text';
         }
+    }
+
+    getBasicStyle () {
+        let result = super.getBasicStyle ();
+
+        if (result.length > 0 && result.substr (result.length - 1, 1) !== ';')
+            result += ';';
+
+        return `
+            ${result}
+            background-color: white;
+            border: solid 1px black;
+            border-radius: 5px;
+        `;
     }
 
     getText () {

@@ -25,6 +25,7 @@ class WndButton extends SimpleButton {
         if (!this.properties.bg) this.properties.bg = 'blue';
         if (!this.properties.borderradius) this.properties.borderradius = '5px';
         if (!this.properties.background) this.properties.background = this.properties.enabled ? this.properties.bg : this.properties.bgGrayed;
+        if (!this.properties.boxshadow) this.properties.boxshadow = '1px 1px 10px rgba(0,0,0,0.7)';
     }
 }
 

@@ -49,13 +49,15 @@ class CloseIcon extends Component {
             this.openTag = '';
             this.closeTag = '';
         }
+
+        this.crossChar = isWindowsXp () ? 'x' : Symbols.cross;
     }
 
     render () {
         return `
             <CloseIconContainer>
                 ${this.openTag}
-                ✖
+                ${this.crossChar}
                 ${this.closeTag}
             </CloseIconContainer>
         `;
@@ -77,6 +79,7 @@ var WndContainer = Styled.Div`
     font-size: 30px;
     font-weight: bold;
     color: #eeeeee;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.7);
 `;
 
 class Wnd extends Component {

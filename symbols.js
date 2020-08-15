@@ -27,6 +27,7 @@ const Symbols = {
     magnifier2    : '🔎',
     pause         : '❚❚',
     resume        : '❚►',
+    envelope      : '✉',
     magnifier3    : '&#x1F50D,',
     magnifier4    : '&#x1F50E,',
     clip          : '📎'

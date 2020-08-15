@@ -376,6 +376,7 @@ Component.anonimousCbCount = 0;
 
 Component.callbacks = {
     list: {},
+    timers: {},
     listToBeCalledOnce: {},
     queue: [],
     register: (name, cb, context) => {
@@ -413,18 +414,40 @@ Component.callbacks = {
 
         return { name: caller, file: file, char: parseInt (char), line: parseInt (line) };
     },
+    uniqueKey: () => {
+        const stackInfo = Component.callbacks.getCallStackInfo (2);
+        
+        return `${stackInfo.file}:${stackInfo.line}`;
+    },
     bind: (cb, context) => {
-        const stackInfo = Component.callbacks.getCallStackInfo (1);
-        const key = `${stackInfo.file}:${stackInfo.line}`
+        //const stackInfo = Component.callbacks.getCallStackInfo (1);
+        const key = Component.callbacks.uniqueKey (); //`${stackInfo.file}:${stackInfo.line}`
         if (!Component.callbacks.listToBeCalledOnce [key]) {
             Component.callbacks.register (key, cb, context);
         }
 
         return key;
     },
+    setTimer: (cb, interval) => {
+        //const stackInfo = Component.callbacks.getCallStackInfo (1);
+        const key = Component.callbacks.uniqueKey (); //`${stackInfo.file}:${stackInfo.line}`
+
+        if (key in Component.callbacks.timers) {
+            const rec = Component.callbacks.timers [key];
+
+            // do nothing if it is the same callback and the same caller (the same key)
+            if (rec.cb === cb) return;
+
+            clearInterval (rec.timer);
+        }
+
+        Component.callbacks.timers [key] = { timer: setInterval (cb, interval), cb: cb };
+
+        return key;
+    },
     invokeAsyncOnce: (cb, arg) => {
-        const stackInfo = Component.callbacks.getCallStackInfo (1);
-        const key = `${stackInfo.file}:${stackInfo.line}`
+        //const stackInfo = Component.callbacks.getCallStackInfo (1);
+        const key = Component.callbacks.uniqueKey (); //`${stackInfo.file}:${stackInfo.line}`
         if (!Component.callbacks.listToBeCalledOnce [key]) {
             Component.callbacks.register (key, cb, this);
             Component.callbacks.invokeAsync (key, arg);

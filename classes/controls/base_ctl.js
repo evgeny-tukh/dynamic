@@ -53,6 +53,9 @@ class BaseControl extends Component {
         const marginBottom = this.properties.marginbottom ? this.properties.marginbottom : margin;
         const cursor = this.properties.cursor ? this.properties.cursor : 'default';
         const display = this.properties.display ? this.properties.display : 'initial';
+        const zIndex = this.properties.zindex ? this.properties.zindex : 'initial';
+        const position = this.properties.position ? this.properties.position : 'initial';
+        const boxShadow = this.properties.boxshadow ? this.properties.boxshadow : 'initial';
 
         return `
             outline-style: none;
@@ -81,6 +84,9 @@ class BaseControl extends Component {
             float: ${float};
             cursor: ${cursor};
             display: ${display};
+            z-index: ${zIndex};
+            position: ${position};
+            box-shadow: ${boxShadow};
         `;
     }
 
@@ -103,7 +109,7 @@ class BaseControl extends Component {
         return position;
     }
 
-    getValueToDispatch () {
+    getValueToDispatch (event) {
         return event.target.value;
     }
 
@@ -111,17 +117,24 @@ class BaseControl extends Component {
         switch (event.type) {
             case 'click': {
                 if (this.oncClickEvent)
-                    this.store.dispatch (ActionEvent.create (this.oncClickEvent, this.getValueToDispatch ()));
+                    this.store.dispatch (ActionEvent.create (this.onClickEvent, this.getValueToDispatch (event)));
 
                 break;
             }
 
-            case 'change':
+            case 'change': {
+                if (['text', 'password', 'number'].indexOf (event.target.type) >= 0) break;
+            }
+
             case 'input': {
                 if (this.onChangeEvent)
-                    this.store.dispatch (ActionEvent.create (this.onChangeEvent, this.getValueToDispatch ()));
+                    this.store.dispatch (ActionEvent.create (this.onChangeEvent, this.getValueToDispatch (event)));
 
                 break;
+            }
+
+            case 'blur': {
+                event.stopPropagation ();
             }
         }
     }
@@ -135,6 +148,7 @@ class BaseControl extends Component {
                 onchange="dispatchBaseCtlEvent (event);"
                 oninput="dispatchBaseCtlEvent (event);"
                 onclick="dispatchBaseCtlEvent (event);"
+                onblur="dispatchBaseCtlEvent (event);"
             >
                 ${this.getText ()}
             </${this.tag}>

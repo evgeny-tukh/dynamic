@@ -13,3 +13,7 @@ function setBodyClass (body) {
         body.className = BODY_DESKTOP_CLASS;
     }
 }
+
+function isWindowsXp () {
+    return navigator.userAgent.indexOf ('Windows NT 5.1') >= 0;
+}
