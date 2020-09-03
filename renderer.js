@@ -123,7 +123,7 @@ function Styled (css, tag, element) {
     return `<${tag} id=${element.styleName} class=${element.styleName} ${style}>${element.content}</${tag}>`;
 }
 
-['Div', 'Span', 'A', 'Input', 'Button', 'Img'].forEach (
+['Div', 'Span', 'A', 'Input', 'Button', 'Img', 'TextArea'].forEach (
     tag => {
         Styled [tag] = css => {
             return function (element) {
@@ -183,6 +183,9 @@ class Component {
 
         if (!this.properties.id)
             this.properties.id = this.id;
+    }
+
+    postRender (element) {        
     }
 
     getText () {
@@ -285,10 +288,13 @@ class Component {
                 
                 for (const propName in instance.properties)
                     element.setAttribute (propName, instance.properties[propName]);
-    
+                    
                 // Children components need to be reattached and re-rendered
                 Component.attachAll (element);
                 Component.renderAll (element);
+    
+                if (instance.postRender)
+                    instance.postRender (element);
             }
     
             // Do not go inside component; the componennt renders itself

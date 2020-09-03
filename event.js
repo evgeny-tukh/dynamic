@@ -25,4 +25,6 @@ ActionEvent.BASE_EVENTS = {
     PASSWORD_CHANGED: 'PasswordChanged',
     PASSWORD_CONF_CHANGED: 'PasswordConfChanged',
     LOGIN_FAILED: 'LoginFailed',
+
+    SHOW_PROGRESS_INDICATOR: 'ShowProgressIndicator',
 };

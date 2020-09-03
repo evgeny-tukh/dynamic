@@ -43,7 +43,7 @@ class ComboBox extends BaseControl {
                     ${this.getOptionClickHandler ()}
                     style="text-align:left;"
                     value="${instance.values [index]}"
-                    ${index === instance.selection || item === instance.selection ? "selected" : ""}
+                    ${(index === instance.selection || item === instance.selection || parseInt (instance.values [index]) === instance.selection) ? "selected" : ""}
                 >
                     ${instance.getPrefix (item)}${item}
                 </option>\n

@@ -40,6 +40,11 @@ Store.BASE_STATE = {
     mobile: false,
     landscape: false,
 
+    progressIndicator: {
+        visible: false,
+        status: 0,
+    },
+
     confirmation: null,
     input: null,
 
@@ -163,6 +168,10 @@ Store.processBaseEvent = (state, event) => {
 
         case Events.LOGIN_FAILED: {
             state.user.loginFailed = true; break;
+        }
+
+        case Events.SHOW_PROGRESS_INDICATOR: {
+            state.progressIndicator.visible = event.payload; break;
         }
 
         default: {
