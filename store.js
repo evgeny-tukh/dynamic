@@ -65,6 +65,12 @@ Store.BASE_STATE = {
         password: '',
         loginFailed: false,
     },
+
+    settings: {
+        lastChange: 0,
+        userValues: {},
+        commonValues: {},
+    },
 };
 
 Store.openWindow = (state, componentName) => {
@@ -172,6 +178,32 @@ Store.processBaseEvent = (state, event) => {
 
         case Events.SHOW_PROGRESS_INDICATOR: {
             state.progressIndicator.visible = event.payload; break;
+        }
+
+        case Events.SET_SETTINGS: {
+            state.settings.userValues = {};
+            state.settings.commonValues = {};
+            state.settings.lastChange = new Date ().getTime () / 1000;
+
+            for (const key in event.payload.userValues)
+                state.settings.userValues [key] = event.payload.userValues [key];
+
+            for (const key in event.payload.commonValues)
+                state.settings.commonValues [key] = event.payload.commonValues [key];
+
+            break;
+        }
+
+        case Events.SET_SETTING: {
+            if (event.payload.global) {
+                state.settings.commonValues [event.payload.name] = event.payload.value;
+            } else {
+                state.settings.userValues [event.payload.name] = event.payload.value;
+            }
+
+            state.settings.lastChange = new Date ().getTime () / 1000;
+
+            break;
         }
 
         default: {

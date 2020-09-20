@@ -10,6 +10,8 @@ class App extends Component {
 
         this.store.dispatch (ActionEvent.create (Events.SET_MOBILE, App.mobileApp));
 
+        this.loadSettings ();
+
         window.addEventListener(
             "orientationchange", 
             () => {
@@ -29,6 +31,9 @@ class App extends Component {
         setInterval (() => {
             app.onAliveCheck ((getTimestamp () - app.lastMouseMove) < app.aliveTimeout);
         }, this.aliveCheckInterval);
+    }
+
+    loadSettings () {
     }
 
     render () {

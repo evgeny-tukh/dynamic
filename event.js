@@ -27,4 +27,7 @@ ActionEvent.BASE_EVENTS = {
     LOGIN_FAILED: 'LoginFailed',
 
     SHOW_PROGRESS_INDICATOR: 'ShowProgressIndicator',
+
+    SET_SETTINGS: 'SetSettings',
+    SET_SETTING: 'SetSetting',
 };
