@@ -16,7 +16,8 @@ class WndButton extends SimpleButton {
         else
             this.properties.enabled = true;
 
-        this.properties.y = 0;
+        if (!this.properties.y) this.properties.y = 0;
+        
         if (!this.properties.width) this.properties.width = '150px';
         if (!this.properties.height) this.properties.height = '60px';
         if (!this.properties.fontsize) this.properties.fontsize = '25px';

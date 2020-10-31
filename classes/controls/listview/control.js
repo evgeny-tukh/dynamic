@@ -17,15 +17,19 @@ class ListView extends Component {
             selBgColor: this.properties.selbgcolor ? this.properties.selbgcolor : 'transparent',
             maxHeight: this.properties.maxheight ? this.properties.maxheight : 'auto',
             width: this.properties.width ? this.properties.width : 'auto',
+            itemSeparator: this.properties.itemsep ? this.properties.itemsep : ';;',
+            columnSeparator: this.properties.colsep ? this.properties.colsep : ';',
+            dataSeparator: this.properties.datasep ? this.properties.datasep : ':',
+            fieldSeparator: this.properties.fieldSep ? this.properties.fieldSep : ';',
         };
 
         if (this.properties.onitemclick) this.config.onItemClick = this.properties.onitemclick;
         
         if (this.properties.columns) {
-            const columns = this.properties.columns.split (';');
+            const columns = this.properties.columns.split (this.config.columnSeparator);
 
             columns.forEach (column => {
-                const parts = column.split (':');
+                const parts = column.split (this.config.dataSeparator);
 
                 if (parts.length > 1) {
                     this.addColumn (parts [0], parseInt (parts [1]));
@@ -36,15 +40,15 @@ class ListView extends Component {
         }
 
         if (this.properties.items) {
-            const items = this.properties.items.split (';;');
+            const items = this.properties.items.split (this.config.itemSeparator);
 
             items.forEach (item => {
-                const parts = item.split (':');
+                const parts = item.split (this.config.dataSeparator);
 
                 if (parts.length === 1) {
-                    this.addItem (parts [0].split (';'));
+                    this.addItem (parts [0].split (this.config.fieldSeparator));
                 } else {
-                    this.addItem (parts [0].split (';'), parts [1]);
+                    this.addItem (parts [0].split (this.config.fieldSeparator), parts [1]);
                 }
             });
         }

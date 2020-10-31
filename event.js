@@ -30,4 +30,6 @@ ActionEvent.BASE_EVENTS = {
 
     SET_SETTINGS: 'SetSettings',
     SET_SETTING: 'SetSetting',
+
+    SET_MOBILE: 'SetMobile',
 };

@@ -119,35 +119,35 @@ Store.processBaseEvent = (state, event) => {
     let result = true;
 
     switch (event.id) {
-        case Events.OPEN_INPUT_BOX: {
+        case ActionEvent.BASE_EVENTS.OPEN_INPUT_BOX: {
             Store.openInputBox (state, event.payload); break;
         }
 
-        case Events.OPEN_CONF_BOX: {
+        case ActionEvent.BASE_EVENTS.OPEN_CONF_BOX: {
             Store.openConfBox (state, event.payload); break;
         }
 
-        case Events.CLOSE_CONF_BOX: {
+        case ActionEvent.BASE_EVENTS.CLOSE_CONF_BOX: {
             Store.closeConfBox (state); break;
         }
         
-        case Events.CLOSE_INPUT_BOX: {
+        case ActionEvent.BASE_EVENTS.CLOSE_INPUT_BOX: {
             Store.closeInputBox (state); break;
         }
 
-        case Events.INPUT_BOX_CONTENT_CHANGED: {
+        case ActionEvent.BASE_EVENTS.INPUT_BOX_CONTENT_CHANGED: {
             Store.onInputBoxContentChanged (state, event.payload); break;
         }
         
-        case Events.OPEN_WINDOW: {
+        case ActionEvent.BASE_EVENTS.OPEN_WINDOW: {
             Store.openWindow (state, event.payload); break;
         }
 
-        case Events.CLOSE_WINDOW: {
+        case ActionEvent.BASE_EVENTS.CLOSE_WINDOW: {
             Store.closeWindow (state, event.payload); break;
         }
 
-        case Events.LOGGED_IN: {
+        case ActionEvent.BASE_EVENTS.LOGGED_IN: {
             state.user.userID = event.payload.userID;
             state.user.userName = event.payload.userName;
             state.user.roles = event.payload.roles;
@@ -157,30 +157,30 @@ Store.processBaseEvent = (state, event) => {
             break;
         }
 
-        case Events.LOGGED_OUT: {
+        case ActionEvent.BASE_EVENTS.LOGGED_OUT: {
             state.user.userID = null;
             state.user.loggedIn = false;
 
             break;
         }
 
-        case Events.USER_NAME_CHANGED: {
+        case ActionEvent.BASE_EVENTS.USER_NAME_CHANGED: {
             state.user.userName = event.payload; break;
         }
 
-        case Events.PASSWORD_CHANGED: {
+        case ActionEvent.BASE_EVENTS.PASSWORD_CHANGED: {
             state.user.password = event.payload; break;
         }
 
-        case Events.LOGIN_FAILED: {
+        case ActionEvent.BASE_EVENTS.LOGIN_FAILED: {
             state.user.loginFailed = true; break;
         }
 
-        case Events.SHOW_PROGRESS_INDICATOR: {
+        case ActionEvent.BASE_EVENTS.SHOW_PROGRESS_INDICATOR: {
             state.progressIndicator.visible = event.payload; break;
         }
 
-        case Events.SET_SETTINGS: {
+        case ActionEvent.BASE_EVENTS.SET_SETTINGS: {
             state.settings.userValues = {};
             state.settings.commonValues = {};
             state.settings.lastChange = new Date ().getTime () / 1000;
@@ -194,7 +194,7 @@ Store.processBaseEvent = (state, event) => {
             break;
         }
 
-        case Events.SET_SETTING: {
+        case ActionEvent.BASE_EVENTS.SET_SETTING: {
             if (event.payload.global) {
                 state.settings.commonValues [event.payload.name] = event.payload.value;
             } else {
