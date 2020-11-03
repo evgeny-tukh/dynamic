@@ -84,21 +84,60 @@ function formatIntLeadingZeros (value, numOfDigits) {
     return result;
 }
 
+function formatFloatLeadingZeros (value, integralLen, fractalLen) {
+    let result = value.toFixed (fractalLen);
+    let dotPos = result.indexOf ('.');
+
+    while (dotPos < integralLen) {
+        result = '0' + result;
+        
+        ++ dotPos;
+    }
+
+    return result;
+}
+
+
 function formatUnixTimestamp (timestamp, options) {
     const dateTime = parseUnixTimestamp (timestamp);
 
-    if (!options) options = {
-        formatDate: true,
-        formatTime: true,
-    };
+    if (!options) options = {};
 
-    let result = options.formatDate ? formatIntLeadingZeros (dateTime.day, 2) + '.' + formatIntLeadingZeros (dateTime.month, 2) + '.' + dateTime.year : '';
+    ['formatDate', 'formatTime', 'showSeconds'].forEach (option => {
+        if (!(option in options)) options [option] = true;
+    });
+
+    let result = options.formatDate ? (
+        formatIntLeadingZeros (dateTime.day, 2) + '.' +
+        formatIntLeadingZeros (dateTime.month, 2) + '.' + 
+        dateTime.year
+    ) : '';
     
     if (options.formatTime) {
         if (result.length > 0) result += ' ';
 
-        result += formatIntLeadingZeros (dateTime.hours, 2) + ':' + formatIntLeadingZeros (dateTime.minutes, 2) + ':' + formatIntLeadingZeros (dateTime.seconds, 2);
+        result += (
+            formatIntLeadingZeros (dateTime.hours, 2) + ':' +
+            formatIntLeadingZeros (dateTime.minutes, 2) + 
+            (options.showSeconds ? (':' + formatIntLeadingZeros (dateTime.seconds, 2)) : '')
+        );
     }
 
     return result;
+}
+
+function formatLat (value) {
+    const absValue = Math.abs (value);
+    const deg      = Math.floor (absValue);
+    const min      = (absValue - deg) * 60;
+
+    return formatIntLeadingZeros (deg, 2) + ' ' + formatFloatLeadingZeros (min, 2, 3) + (value >= 0 ? 'N' : 'S');
+}
+
+function formatLon (value) {
+    const absValue = Math.abs (value);
+    const deg      = Math.floor (absValue);
+    const min      = (absValue - deg) * 60;
+
+    return formatIntLeadingZeros (deg, 3) + ' ' + formatFloatLeadingZeros (min, 2, 3) + (value >= 0 ? 'E' : 'W');
 }
