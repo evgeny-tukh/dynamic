@@ -48,7 +48,7 @@ function parseUnixTimestamp (timestamp) {
     for (month = 0; month < 12; ++ month) {
         const monthSize = month != 1 ? MONTH_SIZE [month] : (isLeapYear ? 29 : 28);
 
-        if (dayCount < monthSize) break;
+        if (dayCount <= monthSize) break;
 
         dayCount -= monthSize;
     }
@@ -109,7 +109,7 @@ function formatUnixTimestamp (timestamp, options) {
 
     let result = options.formatDate ? (
         formatIntLeadingZeros (dateTime.day, 2) + '.' +
-        formatIntLeadingZeros (dateTime.month, 2) + '.' + 
+        formatIntLeadingZeros (dateTime.month + 1, 2) + '.' + 
         dateTime.year
     ) : '';
     
