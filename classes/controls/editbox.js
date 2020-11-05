@@ -20,7 +20,7 @@ class EditBox extends BaseControl {
         if (this.properties.name)
             this.attributes += ` name="${this.properties.name}"`;
 
-        this.attributes += ` autocomplete="${this.properties.autocomplete ? 'on' : 'new-password'}"`;
+        this.attributes += ` autocomplete="${this.properties.autocomplete ? 'on' : (password ? 'new-password' : '')}"`;
     }
 
     getType () {

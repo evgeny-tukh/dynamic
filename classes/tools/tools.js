@@ -97,6 +97,84 @@ function formatFloatLeadingZeros (value, integralLen, fractalLen) {
     return result;
 }
 
+function deformatUnixTimestamp (dateTimeString) {
+    const [date, time] = dateTimeString.split (' ');
+    let separatorChar = '-';
+    let firstSeparatorPos = date.indexOf (separatorChar);
+    let year, month, day;
+
+    if (firstSeparatorPos < 0) {
+        separatorChar = '/';
+        firstSeparatorPos = date.indexOf (separatorChar);
+    }
+
+    if (firstSeparatorPos < 0) {
+        separatorChar = '.';
+        firstSeparatorPos = date.indexOf (separatorChar);
+    }
+
+    if (firstSeparatorPos < 0) {
+        console.log (`Invalid date format ${date}`); return 0;
+    }
+
+    const dateParts = date.split (separatorChar);
+
+    if (dateParts.length < 3) {
+        console.log (`Invalid date format ${date}`); return 0;
+    }
+
+    if (dateParts [0].length === 4) {
+        // YYYY MM DD
+        year = parseInt (dateParts [0]);
+        month = parseInt (dateParts [1]);
+        day = parseInt (dateParts [2]);
+    } else if (dateParts [2].length === 4) {
+        if (separatorChar === '.') {
+            // German format DD.MM.YYYY
+            year = parseInt (dateParts [2]);
+            month = parseInt (dateParts [1]);
+            day = parseInt (dateParts [0]);
+        } else {
+            // MM DD YYYY
+            year = parseInt (dateParts [2]);
+            month = parseInt (dateParts [0]);
+            day = parseInt (dateParts [1]);
+        }
+    } else if (separatorChar === '.') {
+        // German format DD.MM.YY
+        year = parseInt (dateParts [2] + 2000);
+        month = parseInt (dateParts [1]);
+        day = parseInt (dateParts [0]);
+    } else {
+        // MM DD YY
+        year = parseInt (dateParts [2] + 2000);
+        month = parseInt (dateParts [0]);
+        day = parseInt (dateParts [1]);
+    }
+
+    const timeParts = time.split (':');
+
+    const hours = parseInt (timeParts [0]);
+    const minutes = timeParts.length > 1 ? parseInt (timeParts [1]) : 0;
+    const seconds = timeParts.length > 2 ? parseInt (timeParts [2]) : 0;
+
+    let numOfLeapYears = Math.floor ((year - 1968) / 4);
+    const isLeap = ((year - 1968) % 4) == 0;
+    
+    if (isLeap && month > 2) ++ numOfLeapYears;
+
+    let timestamp = ((year - 1970) * 365 + numOfLeapYears) * SEC_IN_DAY;
+
+    for (let i = 1; i < month; ++ i) {
+        timestamp += MONTH_SIZE [i-1] * SEC_IN_DAY;
+
+        if (isLeap && i == 2) timestamp += SEC_IN_DAY;
+    }
+
+    timestamp += hours * 3600 + minutes * 60 + seconds;
+    
+    return timestamp;
+}
 
 function formatUnixTimestamp (timestamp, options) {
     const dateTime = parseUnixTimestamp (timestamp);
