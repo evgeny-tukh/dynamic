@@ -83,6 +83,12 @@ class ListView extends Component {
         });
     }
 
+    onScroll (div) {
+        if (this.properties.scrollevent) {
+            this.store.dispatch (ActionEvent.create (this.properties.scrollevent, div.scrollTop));
+        }
+    }
+
     render () {
         let items = '';
         const columns = JSON.stringify (this.columns);
@@ -96,10 +102,27 @@ class ListView extends Component {
 
         return `
             <ListViewHeader columns='${columns}' config='${config}'></ListViewHeader>
-            <div style="width:${this.config.width};height:${this.config.maxHeight};overflow-y:scroll;">
+            <div
+                style="width:${this.config.width};height:${this.config.maxHeight};overflow-y:scroll;"
+                onscroll="Component.all['${this.id}'].onScroll(this);");"
+            >
                 ${items}
             </div>
         `;
+    }
+
+    pastRender (parent, instance) {
+        if (instance.properties.scroller) {
+            try {
+                const div = parent.children [1];
+
+                if (div) {
+                    div.scrollTop = Component.callbacks.invoke (this.properties.scroller, this);
+            }
+            } catch (error) {
+                console.log (`Invalid scrolltop: ${error.message}`);
+            }
+        }
     }
 }
 

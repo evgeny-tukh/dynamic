@@ -196,6 +196,16 @@ class Component {
         this.element.innerHTML = this.render ();
 
         Component.renderAll (this.element);
+
+        if (this.element.instance.pastRender)
+        {
+            const instance = this.element.instance;
+            const element = this.element;
+
+            setTimeout (() => {
+                instance.pastRender (element);
+            }, 100);
+        }
     }
 
     render () {
@@ -285,10 +295,19 @@ class Component {
                 
                 element.innerHTML = instance.render ();
                 element.instance  = instance;
-                
-                for (const propName in instance.properties)
-                    element.setAttribute (propName, instance.properties[propName]);
+
+                for (const propName in instance.properties) {
+                    try {
+                        element.setAttribute (propName, instance.properties[propName]);
+                    } catch (error) {
+                        console.log (error.message);
+                    }
+                }
                     
+                if (instance.pastRender) setTimeout (() => {
+                    instance.pastRender (element, instance);
+                }, 10);
+            
                 // Children components need to be reattached and re-rendered
                 Component.attachAll (element);
                 Component.renderAll (element);
