@@ -96,3 +96,7 @@ function isNotNothing (value) {
 function getTimestamp () {
     return new Date ().getTime ();
 }
+
+function recursiveCopyObject (source) {
+    return JSON.parse (JSON.stringify (source));
+}
