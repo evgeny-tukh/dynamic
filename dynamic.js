@@ -100,3 +100,18 @@ function getTimestamp () {
 function recursiveCopyObject (source) {
     return JSON.parse (JSON.stringify (source));
 }
+
+function recursiveCopyObjectContent (dest, source) {
+    for (const key in source) {
+        if (typeof (source [key]) === 'object') {
+            recursiveCopyObjectContent (dest [key], source [key]);
+
+        } else {
+            dest [key] = source [key];
+        }
+    }
+
+    for (const key in dest) {
+        if (!(key in source)) delete dest [key];
+    }
+}
