@@ -104,6 +104,10 @@ function recursiveCopyObject (source) {
 function recursiveCopyObjectContent (dest, source) {
     for (const key in source) {
         if (typeof (source [key]) === 'object') {
+            if (!dest [key] && source [key] && typeof (source [key]) === 'object') {
+                dest [key] = {};
+            }
+
             recursiveCopyObjectContent (dest [key], source [key]);
 
         } else {
