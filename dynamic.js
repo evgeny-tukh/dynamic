@@ -111,6 +111,10 @@ function recursiveCopyObjectContent (dest, source) {
             recursiveCopyObjectContent (dest [key], source [key]);
 
         } else {
+            if (!dest) {
+                console.log (`Error copying ${key}`);
+            }
+            
             dest [key] = source [key];
         }
     }

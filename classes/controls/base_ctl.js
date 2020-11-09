@@ -123,10 +123,15 @@ class BaseControl extends Component {
             }
 
             case 'change': {
+                if (event.target.tagName === 'SELECT') break;
                 if (['text', 'password', 'number'].indexOf (event.target.type) >= 0) break;
             }
 
             case 'input': {
+                if (event.target.tagName === 'SELECT' && this.properties.validateselection && !Component.callbacks.invoke (this.properties.validateselection, event)) {
+                    event.stopPropagation (); break;
+                }
+
                 if (this.onChangeEvent)
                     this.store.dispatch (ActionEvent.create (this.onChangeEvent, this.getValueToDispatch (event)));
 
