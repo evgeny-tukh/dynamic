@@ -16,6 +16,7 @@ class InputBox extends ConfirmationBox {
         const minProp = this.properties.min ? `number="${this.properties.min}"` : '';
         const maxProp = this.properties.max ? `number="${this.properties.max}"` : '';
         const stepProp = this.properties.step ? `number="${this.properties.step}"` : '';
+        const editBoxWidth = `width=${this.properties.editboxwidth ? this.properties.editboxwidth : "200px"}`;
 
         return `
             <div style="width:100%;background-color:yellow;height:fit-content;">
@@ -24,7 +25,7 @@ class InputBox extends ConfirmationBox {
                     onchangeevent="${Events.INPUT_BOX_CONTENT_CHANGED}"
                     float="right"
                     marginRight="10px"
-                    width="200px"
+                    ${editBoxWidth}
                     fontSize="25px"
                     background="white"
                     color="black"

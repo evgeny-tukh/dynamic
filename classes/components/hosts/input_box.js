@@ -18,6 +18,7 @@ class InputBoxHost extends Component {
         const minProp = this.activeInput && this.activeInput.min ? `number="${this.activeInput.min}"` : '';
         const maxProp = this.activeInput && this.activeInput.max ? `number="${this.activeInput.max}"` : '';
         const stepProp = this.activeInput && this.activeInput.step ? `number="${this.activeInput.step}"` : '';
+        const editBoxWidth = this.activeInput && this.activeInput.editBoxWidth ? `editBoxWidth=${this.activeInput.editBoxWidth}` : '';
 
         return this.activeInput ? `
             <InputBox
@@ -25,7 +26,7 @@ class InputBoxHost extends Component {
                 actions="${this.activeInput.actions.join (',')}"
                 callback="${this.activeInput.callback ? this.activeInput.callback : ''}"
                 prompt="${this.activeInput.prompt}"
-                ${numberProp} ${minProp} ${maxProp} ${stepProp}
+                ${numberProp} ${minProp} ${maxProp} ${stepProp} ${editBoxWidth}
             >
                 ${this.activeInput.data}
             </InputBox>
