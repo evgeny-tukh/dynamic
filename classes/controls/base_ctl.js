@@ -98,12 +98,24 @@ class BaseControl extends Component {
                 position:absolute;
                 left:${this.properties.x};
                 top:${this.properties.y};
-                width:${this.properties.width};
-                height:${this.properties.height};
             `;
+
+            if (this.properties.width) {
+                position += `width:${this.properties.width};`;
+            } else if (this.properties.right) {
+                position += `right:${this.properties.right};`;
+            }
+
+            if (this.properties.height) {
+                position += `height:${this.properties.height};`;
+            } else if (this.properties.bottom) {
+                position += `bottom:${this.properties.bottom};`;
+            }
         } else {
             if (this.properties.width) position += `width:${this.properties.width};`;
             if (this.properties.height) position += `height:${this.properties.height};`;
+            if (this.properties.right) position += `width:${this.properties.right};`;
+            if (this.properties.bottom) position += `height:${this.properties.bottom};`;
         }
 
         return position;
