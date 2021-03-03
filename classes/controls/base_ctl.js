@@ -6,6 +6,7 @@ class BaseControl extends Component {
         this.id = `bctl${BaseControl.count++}`;
         this.onClickEvent = BaseControl.decodeEvent (this.properties.onclickevent);
         this.onChangeEvent = BaseControl.decodeEvent (this.properties.onchangeevent);
+        this.onBlurEvent = BaseControl.decodeEvent (this.properties.onblurevent);
     }
 
     static decodeEvent (eventID) {
@@ -133,25 +134,26 @@ class BaseControl extends Component {
 
                 break;
             }
-
             case 'change': {
                 if (event.target.tagName === 'SELECT') break;
                 if (['text', 'password', 'number'].indexOf (event.target.type) >= 0) break;
             }
-
             case 'input': {
                 if (event.target.tagName === 'SELECT' && this.properties.validateselection && !Component.callbacks.invoke (this.properties.validateselection, event)) {
                     event.stopPropagation (); break;
                 }
-
                 if (this.onChangeEvent)
                     this.store.dispatch (ActionEvent.create (this.onChangeEvent, this.getValueToDispatch (event)));
 
                 break;
             }
-
             case 'blur': {
-                event.stopPropagation ();
+                if (this.onBlurEvent) {
+                    this.store.dispatch (ActionEvent.create (this.onBlurEvent, this.getValueToDispatch (event)));
+                } else {
+                    event.stopPropagation ();
+                }
+                break;
             }
         }
     }

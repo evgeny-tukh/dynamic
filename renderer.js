@@ -453,11 +453,13 @@ Component.callbacks = {
 
         return key;
     },
-    setTimer: (cb, interval) => {
+    setTimer: (cb, interval, once) => {
         //const stackInfo = Component.callbacks.getCallStackInfo (1);
         const key = Component.callbacks.uniqueKey (); //`${stackInfo.file}:${stackInfo.line}`
 
         if (key in Component.callbacks.timers) {
+            if (once) return Component.callbacks.timers [key];
+            
             const rec = Component.callbacks.timers [key];
 
             // do nothing if it is the same callback and the same caller (the same key)
