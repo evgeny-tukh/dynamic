@@ -7,6 +7,7 @@ class EditBox extends BaseControl {
 
         this.tag = 'input';
         this.attributes = `value="${super.getText ()}" type="${this.getType ()}"`;
+        this.noDefStyle = stringToBool (this.properties.nodefstyle);
         
         if (number && this.properties.min)
             this.attributes += ` min="${this.properties.min}"`;
@@ -42,7 +43,7 @@ class EditBox extends BaseControl {
         if (result.length > 0 && result.substr (result.length - 1, 1) !== ';')
             result += ';';
 
-        return `
+        return this.noDefStyle ? result : `
             ${result}
             background-color: white;
             border: solid 1px black;
