@@ -115,17 +115,33 @@ class Wnd extends Component {
         return '';
     }
 
+    renderChildrenMobile () {
+        return null;
+    }
+
     render () {
         WndContainer.styleGetter = this.styleGetter.bind (this);
 
-        const children = this.renderChildren ();
+        const renderChildren = () => {
+            if (dynMobileApp ()) {
+                const result = this.renderChildrenMobile ();
+
+                if (result === null) {
+                    return this.renderChildren ();
+                } else {
+                    return result;
+                }
+            } else {
+                return this.renderChildren ();
+            }
+        };
         
         return `
             <WndContainer>
                 ${this.properties.title}
                 <CloseIcon onclick="${this.id}.onClose"></CloseIcon>
                 <WndClient>
-                    ${children}
+                    ${renderChildren ()}
                 </WndClient>
             </WndContainer>
         `;

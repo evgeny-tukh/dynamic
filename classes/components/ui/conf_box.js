@@ -49,7 +49,11 @@ class ConfirmationBox extends Wnd {
     }
 
     styleGetter () {
-        return "left:30%;width:40%;top:30%;height:200px;";
+        return (
+            dynMobileApp () ?
+                'left:3%;width:92%;top:30%;height:230px;' :
+                'left:30%;width:40%;top:30%;height:200px;'
+        );
     }
 
     onOk () {

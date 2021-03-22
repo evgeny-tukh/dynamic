@@ -84,8 +84,18 @@ if (App.paramInfo.raw.length > 0 && App.paramInfo.raw[0] === '?') {
     });
 }
 
+function dynMobileApp () {
+    if (/Android|webOS|iPhone|iPad|iPod|XiaoMi|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+        return true;
+    } else if (parseInt (App.paramInfo.params.fm) === 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 App.mobileApp = 
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent) ||
+    /Android|webOS|iPhone|iPad|iPod|XiaoMi|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent) ||
     parseInt (App.paramInfo.params.fm) === 1;
 
 App.isLandscape = () => {
@@ -110,6 +120,26 @@ App.isLandscape = () => {
     return result;
 
     //return App.mobileApp && 'orientation' in window && Math.abs (window.orientation) === 90 || App.paramInfo.params.fl === 1;
+};
+
+App.ORIENTATIONS = {
+    PORTRAIT: 'portrait',
+    PORTRAIT_PRIMARY: 'portrait-primary',
+    PORTRAIT_SECONDARY: 'portrait-secondary',
+    LANDSCAPE: 'landscape',
+    LANDSCAPE_PRIMARY: 'landscape-primary',
+    LANDSCAPE_SECONDARY: 'landscape-secondary',
+    DEFAULT: 'default',
+};
+
+App.lockOriientation = (orient) => {
+    screen.lockOrientationUniv = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+
+    if (screen.lockOrientationUniv) {
+        screen.lockOrientationUniv (orient);
+    } else if (screen.orientation) {
+        screen.orientation.lock (orient);
+    }
 };
 
 //const app = new App;
