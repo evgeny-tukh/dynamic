@@ -209,6 +209,20 @@ class Component {
     }
 
     render () {
+        if (dynMobileApp ()) {
+            if (dynIsLandscape ()) {
+                if (this.renderLandscape) return this.renderLandscape ();
+            } else {
+                if (this.renderPortrait) return this.renderPortait ();
+            }
+
+            // None of above called
+            if (this.renderMobileApp) return this.renderMobileApp ();
+        } else if (this.renderDesktop) {
+            return this.renderDesktop ();
+        }
+
+        // Default render handler
         return null;
     }
 

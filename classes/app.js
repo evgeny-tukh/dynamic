@@ -94,6 +94,22 @@ function dynMobileApp () {
     }
 }
 
+function dynIsLandscape () {
+    if (screen.orientation) {
+        if (screen.orientation.angle !== undefined) {
+            return screen.orientation.angle !== 0 && screen.angle !== 180;
+        } else {
+            return screen.orientation.type.indexOf ('landscape') >= 0;
+        }
+    } else {
+        return false;
+    }
+}
+
+function dynIsPortrait () {
+    return dynMobileApp () && !dynIsLandscape ();
+}
+
 App.mobileApp = 
     /Android|webOS|iPhone|iPad|iPod|XiaoMi|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent) ||
     parseInt (App.paramInfo.params.fm) === 1;
@@ -132,7 +148,13 @@ App.ORIENTATIONS = {
     DEFAULT: 'default',
 };
 
-App.lockOriientation = (orient) => {
+if (screen.orientation && screen.orientation.onchange) {
+    screen.orientation.onchange = (orient, event) => {
+        Component.renderAll ();
+    }
+}
+
+App.lockOrientation = (orient) => {
     screen.lockOrientationUniv = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
 
     if (screen.lockOrientationUniv) {
