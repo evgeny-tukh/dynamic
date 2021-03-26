@@ -17,16 +17,29 @@ class InputBox extends ConfirmationBox {
         const maxProp = this.properties.max ? `number="${this.properties.max}"` : '';
         const stepProp = this.properties.step ? `number="${this.properties.step}"` : '';
         const editBoxWidth = `width=${this.properties.editboxwidth ? this.properties.editboxwidth : "200px"}`;
+        const fontSize = /*this.properties.fontsize ? this.properties.fontsize :*/ '25px';
+        let layoutDependentStyle;
+
+        if (dynMobileApp () && dynIsPortrait ()) {
+            layoutDependentStyle = `
+                x="10px"
+                y="40px"
+            `;
+        } else {
+            layoutDependentStyle = `
+                float="right"
+                marginRight="10px"
+            `;
+        }
 
         return `
             <div style="width:100%;background-color:yellow;height:fit-content;">
-                <Label x="10px" y="10px" fontSize="25px">${this.properties.prompt}</Label>
+                <Label x="10px" y="10px" fontSize="${fontSize}">${this.properties.prompt}</Label>
                 <EditBox
                     onchangeevent="${Events.INPUT_BOX_CONTENT_CHANGED}"
-                    float="right"
-                    marginRight="10px"
                     ${editBoxWidth}
-                    fontSize="25px"
+                    ${layoutDependentStyle}
+                    fontSize="${fontSize}"
                     background="white"
                     color="black"
                     paddingLeft="2px"

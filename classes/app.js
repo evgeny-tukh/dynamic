@@ -148,7 +148,7 @@ App.ORIENTATIONS = {
     DEFAULT: 'default',
 };
 
-if (screen.orientation && screen.orientation.onchange) {
+if (screen.orientation && 'onchange' in screen.orientation) {
     screen.orientation.onchange = (orient, event) => {
         Component.renderAll ();
     }
